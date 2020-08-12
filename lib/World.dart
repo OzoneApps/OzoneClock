@@ -1,9 +1,27 @@
+import 'dart:async';
 import 'package:analog_clock/analog_clock.dart';
 import 'package:flutter/material.dart';
 import 'package:ozoneclock/consts.dart';
 
-class World extends StatelessWidget {
-  final DateTime curr = DateTime.now();
+class World extends StatefulWidget {
+  @override
+  _WorldState createState() => _WorldState();
+}
+
+class _WorldState extends State<World> {
+  DateTime curr = DateTime.now();
+  void initState() {
+    super.initState();
+    Duration updateDuration = Duration(minutes: 1);
+    Timer.periodic(updateDuration, update);
+  }
+
+  update(Timer timer) {
+      // update is only called on live clocks. So, it's safe to update datetime.
+      curr = DateTime.now();
+      setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
