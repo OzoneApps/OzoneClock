@@ -3,6 +3,7 @@ import 'package:ozoneclock/BottomBar.dart';
 import 'package:flutter/material.dart';
 import 'package:ozoneclock/Stopwatch.dart';
 import 'package:ozoneclock/Timer.dart';
+import 'package:ozoneclock/World.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,6 +54,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Alarms(),
+            World(),
             Timer(),
             Stopwatch(),
           ]),
