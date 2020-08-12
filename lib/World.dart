@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:analog_clock/analog_clock.dart';
 import 'package:flutter/material.dart';
 import 'package:ozoneclock/consts.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class World extends StatefulWidget {
   @override
@@ -10,10 +12,17 @@ class World extends StatefulWidget {
 
 class _WorldState extends State<World> {
   DateTime curr = DateTime.now();
+  var tzones = {};
   void initState() {
     super.initState();
     Duration updateDuration = Duration(minutes: 1);
     Timer.periodic(updateDuration, update);
+    tz.initializeTimeZones();
+    var locations = tz.timeZoneDatabase.locations;
+    for (String temp in locations.keys) {
+      var loc = tz.getLocation(temp);
+      tzones[loc.toString()] = tz.TZDateTime.from(curr, loc);
+    }
   }
 
   update(Timer timer) {
