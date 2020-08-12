@@ -1,4 +1,8 @@
+import 'package:ozoneclock/Alarms.dart';
+import 'package:ozoneclock/BottomBar.dart';
 import 'package:flutter/material.dart';
+import 'package:ozoneclock/Stopwatch.dart';
+import 'package:ozoneclock/Timer.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,6 +52,9 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           controller: tabBarController,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
+            Alarms(),
+            Timer(),
+            Stopwatch(),
           ]),
       bottomNavigationBar: BottomBar(
         inactiveIconColor: inactiveColor,
