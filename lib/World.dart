@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ozoneclock/consts.dart';
 
 class World extends StatelessWidget {
-  DateTime curr = DateTime.now();
+  final DateTime curr = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
