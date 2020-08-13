@@ -22,7 +22,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin{
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   int currentPage;
   Color currentColor = Colors.deepPurple;
   Color inactiveColor = Colors.black;
@@ -33,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     currentPage = 0;
-    tabs.add(Tabs(Icons.alarm,"Alarm"));
+    tabs.add(Tabs(Icons.alarm, "Alarm"));
     tabs.add(Tabs(Icons.language, "World"));
     tabs.add(Tabs(Icons.access_time, "Stopwatch"));
     tabs.add(Tabs(Icons.timer, "Timer"));
@@ -45,34 +46,43 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Clock", style: TextStyle(color: Colors.black),),
+        title: Text(
+          "Clock",
+          style: TextStyle(color: Colors.black),
+        ),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: TabBarView(
-          controller: tabBarController,
-          physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            Alarms(),
-            World(),
-            Timer(),
-            Stopwatch(),
-          ]),
-      bottomNavigationBar: BottomBar(
-        inactiveIconColor: inactiveColor,
-        tabStyle: TabStyle.STYLE_FADED_BACKGROUND,
-        selectedTab: currentPage,
-        tabs: tabs
-            .map((value) => TabData(
-                iconData: value.icon,
-                title: value.title))
-            .toList(),
-        onTabChangedListener: (position, title, color) {
-          setState(() {
-            tabBarController.animateTo(position);
-            currentPage = position;
-          });
-        },
+      body: Stack(
+        children: [
+          TabBarView(
+              controller: tabBarController,
+              physics: NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                Alarms(),
+                World(),
+                Timer(),
+                Stopwatch(),
+              ]),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomBar(
+              inactiveIconColor: inactiveColor,
+              tabStyle: TabStyle.STYLE_FADED_BACKGROUND,
+              selectedTab: currentPage,
+              tabs: tabs
+                  .map((value) =>
+                      TabData(iconData: value.icon, title: value.title))
+                  .toList(),
+              onTabChangedListener: (position, title, color) {
+                setState(() {
+                  tabBarController.animateTo(position);
+                  currentPage = position;
+                });
+              },
+            ),
+          )
+        ],
       ),
     );
   }
