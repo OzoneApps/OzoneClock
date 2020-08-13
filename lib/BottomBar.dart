@@ -94,12 +94,12 @@ class BottomBarState extends State<BottomBar>
     barBackgroundColor = (widget.barBackgroundColor == null)
         ? (Theme.of(context).brightness == Brightness.dark)
             ? Color(0xFF212121)
-            : Colors.white
+            : Colors.white.withOpacity(0.8)
         : widget.barBackgroundColor;
     textColor = (widget.textColor == null) ? Colors.white : widget.textColor;
     inactiveIconColor = (widget.inactiveIconColor == null)
         ? (Theme.of(context).brightness == Brightness.dark)
-            ? Colors.white
+            ? Colors.white.withOpacity(0.8)
             : Theme.of(context).primaryColor
         : widget.inactiveIconColor;
 
