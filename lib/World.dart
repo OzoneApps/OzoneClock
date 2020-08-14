@@ -23,11 +23,7 @@ class _WorldState extends State<World> {
   void initState() {
     super.initState();
     curr = DateTime.now();
-    getZones().then((value) => 
-      setState(() {
-        times = value;
-      })
-    );
+    updateData();
     Duration updateDuration = Duration(seconds: 1);
     Timer.periodic(updateDuration, update);
     tz.initializeTimeZones();
@@ -261,6 +257,13 @@ class _WorldState extends State<World> {
       // Create the SelectionScreen in the next step.
       MaterialPageRoute(builder: (context) => TimeZones(tzone: tzones)),
     );
-    getZones().then((value) => times = value);
+    updateData();
+  }
+
+  updateData() {
+    del = false;
+    getZones().then((value) => setState(() {
+          times = value;
+        }));
   }
 }
