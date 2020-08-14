@@ -39,9 +39,9 @@ class _WorldState extends State<World> {
 
   update(Timer timer) {
     // update is only called on live clocks. So, it's safe to update datetime.
-    curr = DateTime.now();
-    //print(curr);
-    setState(() {});
+    setState(() {
+      curr = DateTime.now();
+    });
   }
 
   @override
