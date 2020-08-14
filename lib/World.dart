@@ -18,6 +18,8 @@ class _WorldState extends State<World> {
   DateTime curr = DateTime.now();
   var tzones = new SortedMap(Ordering.byKey());
   var times = [];
+  var selected = {};
+  bool del = false;
   void initState() {
     super.initState();
     curr = DateTime.now();
@@ -139,20 +141,31 @@ class _WorldState extends State<World> {
             SizedBox(
               height: 20,
             ),
-            times != null 
+            times != null
                 ? Expanded(
                     child: ListView.builder(
-                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 100),
+                    padding: EdgeInsets.only(left: 16, right: 16),
                     itemCount: times.length,
                     itemBuilder: (BuildContext context, int index) {
-                      var loc = curr.toUtc().add(tzones[times.elementAt(index)]);
+                      var loc =
+                          curr.toUtc().add(tzones[times.elementAt(index)]);
+                      if (!selected.containsKey(times.elementAt(index)))
+                        selected[times.elementAt(index)] = false;
                       return Padding(
                           padding: EdgeInsets.all(5),
                           child: Container(
                               padding: EdgeInsets.all(5),
                               child: OutlineButton(
+                                  onPressed: () => {},
                                   padding: EdgeInsets.all(2),
                                   child: ListTile(
+                                      onLongPress: () => {
+                                            setState(() {
+                                              selected[times.elementAt(index)] =
+                                                  true;
+                                              del = true;
+                                            })
+                                          },
                                       title: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -177,21 +190,65 @@ class _WorldState extends State<World> {
                                           )
                                         ],
                                       ),
-                                      trailing: Text(
-                                        DateFormat('h:mm a').format(loc),
-                                        style: TextStyle(
-                                          fontFamily: 'Segoe UI',
-                                          fontSize: 16,
-                                          color: const Color(0xff1f2426),
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      )),
+                                      trailing: Container(
+                                          width: 130,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                DateFormat('h:mm a')
+                                                    .format(loc),
+                                                style: TextStyle(
+                                                  fontFamily: 'Segoe UI',
+                                                  fontSize: 16,
+                                                  color:
+                                                      const Color(0xff1f2426),
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              del
+                                                  ? Checkbox(
+                                                      value: selected[times
+                                                          .elementAt(index)],
+                                                      onChanged: (val) {
+                                                        setState(() {
+                                                          selected[
+                                                              times.elementAt(
+                                                                  index)] = val;
+                                                        });
+                                                      },
+                                                    )
+                                                  : Container()
+                                            ],
+                                          ))),
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(30)))));
                     },
                   ))
-                : Container()
+                : Container(),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                    padding: EdgeInsets.only(bottom: 60),
+                    child: del
+                        ? OutlineButton(
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            onPressed: () => {
+                              removeString(selected)
+                                  .then((value) => updateData())
+                            },
+                          )
+                        : Container()))
           ],
         )));
   }
