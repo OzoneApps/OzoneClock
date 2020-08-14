@@ -198,6 +198,6 @@ class _WorldState extends State<World> {
       // Create the SelectionScreen in the next step.
       MaterialPageRoute(builder: (context) => TimeZones(tzone: tzones)),
     );
-    if (result != null && !times.contains(result)) times.add(result);
+    if (result.length > 0 && !times.contains(result)) times.add(result);
   }
 }
