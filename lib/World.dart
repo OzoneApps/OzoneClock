@@ -60,13 +60,13 @@ class _WorldState extends State<World> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-                height: 200,
+                height: 0.3 * MediaQuery.of(context).size.height,
+                width: 0.3 * MediaQuery.of(context).size.height,
                 child: Card(
                   elevation: 5,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(200))),
                   child: AnalogClock(
-                    width: 200.0,
                     isLive: true,
                     hourHandColor: Colors.black,
                     minuteHandColor: Colors.black,
