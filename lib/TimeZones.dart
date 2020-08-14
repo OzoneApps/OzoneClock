@@ -60,7 +60,7 @@ class _TimeZonesState extends State<TimeZones> {
                   padding: EdgeInsets.all(16.0),
                   itemCount: widget.tzone.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var curr = DateTime.now().add(widget.tzone.values.elementAt(index));
+                    var curr = DateTime.now().toUtc().add(widget.tzone.values.elementAt(index));
                     return Padding(
                         padding: EdgeInsets.all(5),
                         child: Container(
@@ -97,7 +97,7 @@ class _TimeZonesState extends State<TimeZones> {
                   padding: EdgeInsets.all(16.0),
                   itemCount: filtered.length,
                   itemBuilder: (BuildContext context, int index) {
-                    var curr = DateTime.now().add(widget.tzone[filtered.elementAt(index)]);
+                    var curr = DateTime.now().toUtc().add(widget.tzone[filtered.elementAt(index)]);
                     return Padding(
                         padding: EdgeInsets.all(5),
                         child: Container(

@@ -139,7 +139,7 @@ class _WorldState extends State<World> {
                     padding: EdgeInsets.only(left: 16, right: 16, bottom: 100),
                     itemCount: times.length,
                     itemBuilder: (BuildContext context, int index) {
-                      var loc = curr.add(tzones[times.elementAt(index)]);
+                      var loc = curr.toUtc().add(tzones[times.elementAt(index)]);
                       return Padding(
                           padding: EdgeInsets.all(5),
                           child: Container(
