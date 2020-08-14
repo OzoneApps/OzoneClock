@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:analog_clock/analog_clock.dart';
 import 'package:flutter/material.dart';
+import 'package:ozoneclock/Persistance.dart';
 import 'package:ozoneclock/TimeZones.dart';
 import 'package:ozoneclock/consts.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -20,6 +21,11 @@ class _WorldState extends State<World> {
   void initState() {
     super.initState();
     curr = DateTime.now();
+    getZones().then((value) => 
+      setState(() {
+        times = value;
+      })
+    );
     Duration updateDuration = Duration(seconds: 1);
     Timer.periodic(updateDuration, update);
     tz.initializeTimeZones();
@@ -133,7 +139,7 @@ class _WorldState extends State<World> {
             SizedBox(
               height: 20,
             ),
-            times.length > 0
+            times != null 
                 ? Expanded(
                     child: ListView.builder(
                     padding: EdgeInsets.only(left: 16, right: 16, bottom: 100),
@@ -193,11 +199,11 @@ class _WorldState extends State<World> {
   _navigateAndDisplaySelection(BuildContext context) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
-    var result = await Navigator.push(
+    await Navigator.push(
       context,
       // Create the SelectionScreen in the next step.
       MaterialPageRoute(builder: (context) => TimeZones(tzone: tzones)),
     );
-    if (result.length > 0 && !times.contains(result)) times.add(result);
+    getZones().then((value) => times = value);
   }
 }

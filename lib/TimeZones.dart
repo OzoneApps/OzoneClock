@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ozoneclock/consts.dart';
+import 'package:ozoneclock/Persistance.dart';
 
 class TimeZones extends StatefulWidget {
   final tzone;
@@ -67,6 +68,7 @@ class _TimeZonesState extends State<TimeZones> {
                             padding: EdgeInsets.all(5),
                             child: OutlineButton(
                                 onPressed: () => {
+                                  storeStringList(widget.tzone.keys.elementAt(index).toString()),
                                       Navigator.pop(context,
                                           widget.tzone.keys.elementAt(index))
                                     },
@@ -104,6 +106,7 @@ class _TimeZonesState extends State<TimeZones> {
                             padding: EdgeInsets.all(5),
                             child: OutlineButton(
                                 onPressed: () => {
+                                  storeStringList(filtered.elementAt(index).toString()),
                                       Navigator.pop(context,
                                           filtered.elementAt(index).toString())
                                     },
