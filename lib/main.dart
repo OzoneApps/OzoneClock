@@ -36,8 +36,8 @@ class _MyHomePageState extends State<MyHomePage>
     currentPage = 0;
     tabs.add(Tabs(Icons.alarm, "Alarm"));
     tabs.add(Tabs(Icons.language, "World"));
-    tabs.add(Tabs(Icons.access_time, "Stopwatch"));
-    tabs.add(Tabs(Icons.timer, "Timer"));
+    tabs.add(Tabs(Icons.access_time, "Timer"));
+    tabs.add(Tabs(Icons.timer, "Stopwatch"));
     tabBarController =
         new TabController(initialIndex: currentPage, length: 4, vsync: this);
   }
