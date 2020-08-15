@@ -10,8 +10,7 @@ class Timer extends StatefulWidget {
 class _TimerState extends State < Timer > {
   int hh = 0,
   mm = 0,
-  ss = 0,
-  dur = 0;
+  ss = 0;
   String str = "";
   @override
   void initState() {
@@ -117,15 +116,13 @@ class _TimerState extends State < Timer > {
                 child: IconButton(
                   icon: Icon(Icons.play_arrow, color: base, size: 30),
                   onPressed: () => {
-                    dur = hh*3600+mm*60+ss,
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TimerRun(duration: dur))),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TimerRun(duration: hh*3600+mm*60+ss))).then((value) => 
                     setState((){
                       ss = 0;
                       mm = 0;
                       hh = 0;
-                      dur = 0;
                       str = "";
-                    })
+                    })),
                   },
                 ),
               )
