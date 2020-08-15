@@ -4,7 +4,7 @@ String listKey = "listKey";
 
 void storeStringList(String list) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var lst = await prefs.getStringList(listKey);
+  var lst = prefs.getStringList(listKey);
   print(lst);
   if (lst == null) lst = [];
   lst.add(list);
@@ -13,12 +13,12 @@ void storeStringList(String list) async {
 
 Future<List<dynamic>> getZones() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return await prefs.getStringList(listKey);
+  return prefs.getStringList(listKey);
 }
 
 Future removeString(var cond) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var lst = await prefs.getStringList(listKey);
+  var lst = prefs.getStringList(listKey);
   for (String str in cond.keys) {
     if (cond[str] && lst.contains(str)) {
       lst.remove(str);
