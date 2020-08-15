@@ -58,7 +58,6 @@ class _TimerRunState extends State < TimerRun > with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(8.0),
@@ -80,7 +79,7 @@ class _TimerRunState extends State < TimerRun > with TickerProviderStateMixin {
                               painter: TimerPainter(
                                 animation: controller,
                                 backgroundColor: Colors.white,
-                                color: themeData.indicatorColor,
+                                color: base,
                               ));
                           },
                         ),
