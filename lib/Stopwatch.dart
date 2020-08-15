@@ -9,10 +9,11 @@ class Stopwatch extends StatefulWidget {
 }
 
 class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin {
-  AnimationController controller;
+  Animation<Color> animation;
+  AnimationController controller, flashing;
   var displayTime = "00:00:00.00";
   var _stopWatchTimer;
-  bool isAnimating = false;
+  bool isAnimating = false, del = false, isFlashing = false;
   @override
   void initState() {
     super.initState();
@@ -22,9 +23,20 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
     _stopWatchTimer = StopWatchTimer(
       onChange: (value) {
         displayTime = StopWatchTimer.getDisplayTime(value);
-        print(displayTime);
       },
     );
+    flashing = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    final CurvedAnimation curve = CurvedAnimation(parent: flashing, curve: Curves.ease);
+    animation = ColorTween(begin: Colors.white, end: kindaGray).animate(curve);
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        flashing.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        flashing.forward();
+      }
+      setState(() {});
+    });
+    flashing.forward();
   }
 
   @override
@@ -71,8 +83,9 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
                           displayTime,
                           style: TextStyle(
                             fontSize: 35,
-                            color: kindaGray
-                          ),
+                            color: isFlashing ? animation.value : kindaGray,
+                            fontWeight: FontWeight.w400
+                          )
                         );
                       }),
                   ],
@@ -83,8 +96,7 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
           Container(
             padding: EdgeInsets.only(
               top: 0.05 * MediaQuery.of(context).size.height),
-            child: isAnimating ?
-            Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -97,27 +109,38 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
                       return CircleAvatar(
                         radius: 30,
                         backgroundColor: Colors.white,
-                        child: IconButton(
-                          icon: Icon(isAnimating ?
-                            Icons.pause :
-                            Icons.play_arrow, color: base, size: 30),
+                        child: isAnimating ?  IconButton(
+                          icon: Icon(Icons.pause),
                           onPressed: () {
                             _stopWatchTimer.onExecute
                               .add(StopWatchExecute.stop);
                             controller.stop();
                             setState(() {
                               isAnimating = false;
+                              isFlashing = true;
                             });
                           },
-                        ),
+                        ) : IconButton(
+                          icon:
+                          Icon(Icons.play_arrow, color: base, size: 30),
+                          onPressed: () {
+                            _stopWatchTimer.onExecute
+                              .add(StopWatchExecute.start);
+                            _startAnimation();
+                            setState(() {
+                              isAnimating = true;
+                              del = true;
+                            });
+                          },
+                        )
                       );
                     },
                   ),
                 ),
                 SizedBox(
-                  width: 0.2 * MediaQuery.of(context).size.width,
+                  width: del ? 0.2 * MediaQuery.of(context).size.width : 0,
                 ),
-                Card(
+                del ? Card(
                   elevation: 6,
                   shape: CircleBorder(),
                   child: AnimatedBuilder(
@@ -127,47 +150,25 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
                         radius: 30,
                         backgroundColor: Colors.white,
                         child: IconButton(
-                          icon: Icon(Icons.stop, color: base, size: 30),
+                          icon:
+                          Icon(Icons.restore, color: Colors.red, size: 30),
                           onPressed: () {
                             _stopWatchTimer.onExecute
                               .add(StopWatchExecute.reset);
                             controller.reset();
                             setState(() {
                               isAnimating = false;
+                              del = false;
+                              isFlashing = false;
                             });
                           },
                         ),
                       );
                     },
                   ),
-                ),
+                ) : SizedBox(width: 0, height: 0,)
               ],
-            ) :
-            Card(
-              elevation: 6,
-              shape: CircleBorder(),
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (BuildContext context, Widget child) {
-                  return CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: IconButton(
-                      icon:
-                      Icon(Icons.play_arrow, color: base, size: 30),
-                      onPressed: () {
-                        _stopWatchTimer.onExecute
-                          .add(StopWatchExecute.start);
-                        _startAnimation();
-                        setState(() {
-                          isAnimating = true;
-                        });
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+            ) 
           )
         ],
       ),
