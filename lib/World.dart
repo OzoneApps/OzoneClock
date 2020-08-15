@@ -41,11 +41,9 @@ class _WorldState extends State<World> {
     }
   }
 
-  update(Timer timer) {
+  update(Timer timer) async{
     // update is only called on live clocks. So, it's safe to update datetime.
-    setState(() {
-      curr = DateTime.now();
-    });
+    curr = await DateTime.now();
   }
 
   @override
@@ -86,7 +84,7 @@ class _WorldState extends State<World> {
               style: TextStyle(
                 fontFamily: 'Segoe UI',
                 fontSize: 14,
-                color: const Color(0x8f1f2426),
+                color: kindaGray,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -101,7 +99,7 @@ class _WorldState extends State<World> {
                   style: TextStyle(
                     fontFamily: 'Segoe UI',
                     fontSize: 48,
-                    color: const Color(0xff1f2426),
+                    color: notSoBlack,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -110,7 +108,7 @@ class _WorldState extends State<World> {
                   style: TextStyle(
                     fontFamily: 'Segoe UI',
                     fontSize: 24,
-                    color: const Color(0x8f1f2426),
+                    color: kindaGray,
                     fontWeight: FontWeight.w600,
                   ),
                 )
@@ -171,7 +169,7 @@ class _WorldState extends State<World> {
                                             style: TextStyle(
                                               fontFamily: 'Segoe UI',
                                               fontSize: 14,
-                                              color: const Color(0xff1f2426),
+                                              color: notSoBlack,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -181,7 +179,7 @@ class _WorldState extends State<World> {
                                             style: TextStyle(
                                               fontFamily: 'Segoe UI',
                                               fontSize: 10,
-                                              color: const Color(0xff1f2426),
+                                              color: notSoBlack,
                                             ),
                                           )
                                         ],
@@ -199,7 +197,7 @@ class _WorldState extends State<World> {
                                                   fontFamily: 'Segoe UI',
                                                   fontSize: 16,
                                                   color:
-                                                      const Color(0xff1f2426),
+                                                      notSoBlack,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
