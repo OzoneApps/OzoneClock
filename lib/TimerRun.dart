@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:math'as math;
+import 'dart:math'
+as math;
 import 'package:ozoneclock/consts.dart';
 import 'package:ocarina/ocarina.dart';
 
@@ -22,7 +23,7 @@ class _TimerRunState extends State < TimerRun > with TickerProviderStateMixin {
   bool completed = false;
   String get timerString {
     Duration duration = controller.duration * controller.value;
-    if(duration.inSeconds == 0) {
+    if (duration.inSeconds == 0) {
       player.play();
       completed = true;
     }
@@ -59,118 +60,119 @@ class _TimerRunState extends State < TimerRun > with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: < Widget > [
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.center,
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Stack(
-                    children: < Widget > [
-                      Positioned.fill(
-                        child: AnimatedBuilder(
+      appBar: AppBar(
+        title: Text(
+          "Timer",
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () => {Navigator.pop(context, "")},
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: < Widget > [
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: < Widget > [
+                Positioned.fill(
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return CustomPaint(
+                        painter: TimerPainter(
                           animation: controller,
-                          builder: (BuildContext context, Widget child) {
-                            return CustomPaint(
-                              painter: TimerPainter(
-                                animation: controller,
-                                backgroundColor: Colors.white,
-                                color: base,
-                              ));
-                          },
-                        ),
-                      ),
-                      Align(
-                        alignment: FractionalOffset.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: < Widget > [
-                            Container(
-                              padding: EdgeInsets.only(top: 0.15 * MediaQuery.of(context).size.height, bottom: 0.04 * MediaQuery.of(context).size.height),
-                              width: 0.2 * MediaQuery.of(context).size.width,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Label",
-                                  hintStyle: TextStyle(
-                                  fontSize: 18,
-                                  color: kindaGray
-                                ),
-                                ),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: kindaGray
-                                ),
-                              ),
-                            ),
-                            AnimatedBuilder(
-                              animation: controller,
-                              builder: (BuildContext context, Widget child) {
-                                return Text(
-                                  timerString,
-                                  style: TextStyle(
-                                    fontSize: 50,
-                                    color: kindaGray
-                                  ),
-                                );
-                              }),
-                          ],
-                        ),
-                      ),
-                    ],
+                          backgroundColor: Colors.white,
+                          color: base,
+                        ));
+                    },
                   ),
                 ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: < Widget > [
+                    Container(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Label",
+                          hintStyle: TextStyle(
+                            fontSize: 18,
+                            color: kindaGray
+                          ),
+                        ),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: kindaGray
+                        ),
+                      ),
+                    ),
+                    AnimatedBuilder(
+                      animation: controller,
+                      builder: (BuildContext context, Widget child) {
+                        return Text(
+                          timerString,
+                          style: TextStyle(
+                            fontSize: 50,
+                            color: kindaGray
+                          ),
+                        );
+                      }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 40),
+            child: Card(
+              elevation: 6,
+              shape: CircleBorder(),
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (BuildContext context, Widget child) {
+                  return
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon: completed ? Icon(Icons.stop, color: base, size: 30) :
+                      Icon(controller.isAnimating ?
+                        Icons.pause :
+                        Icons.play_arrow, color: base, size: 30),
+                      onPressed: () {
+                        if (controller.isAnimating) {
+                          setState(() {
+                            controller.stop(canceled: true);
+                          });
+                        } else if (completed) {
+                          player.stop();
+                          Navigator.pop(context);
+                        } else {
+                          setState(() {
+                            controller.reverse(
+                              from: controller.value == 0.0 ?
+                              1.0 :
+                              controller.value);
+                          });
+                        }
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 40),
-              child: Card(
-                elevation: 6,
-                shape: CircleBorder(),
-                child: AnimatedBuilder(
-                  animation: controller,
-                  builder: (BuildContext context, Widget child) {
-                    return
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: completed ? Icon(Icons.stop, color: base, size: 30) : 
-                        Icon(controller.isAnimating ?
-                          Icons.pause :
-                          Icons.play_arrow, color: base, size: 30),
-                        onPressed: () {
-                          if (controller.isAnimating) {
-                            setState(() {
-                              controller.stop(canceled: true);
-                            });
-                          } else if(completed){
-                            player.stop();
-                            Navigator.pop(context);
-                          }
-                          else {
-                            setState(() {
-                              controller.reverse(
-                                from: controller.value == 0.0 ?
-                                1.0 :
-                                controller.value);
-                            });
-                          }
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

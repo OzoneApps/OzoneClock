@@ -44,155 +44,140 @@ class _StopwatchState extends State < Stopwatch > with TickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: < Widget > [
-            Expanded(
-              child: Align(
-                alignment: FractionalOffset.center,
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Stack(
-                    children: < Widget > [
-                      Positioned.fill(
-                        child: AnimatedBuilder(
-                          animation: controller,
-                          builder: (BuildContext context, Widget child) {
-                            return CustomPaint(
-                              painter: SpritePainter(controller));
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: < Widget > [
+          AspectRatio(
+            aspectRatio: 1.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: < Widget > [
+                Positioned.fill(
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return CustomPaint(
+                        painter: SpritePainter(controller));
+                    },
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: < Widget > [
+                    AnimatedBuilder(
+                      animation: controller,
+                      builder: (BuildContext context, Widget child) {
+                        return Text(
+                          displayTime,
+                          style: TextStyle(
+                            fontSize: 35,
+                            color: kindaGray
+                          ),
+                        );
+                      }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              top: 0.05 * MediaQuery.of(context).size.height),
+            child: isAnimating ?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Card(
+                  elevation: 6,
+                  shape: CircleBorder(),
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                          icon: Icon(isAnimating ?
+                            Icons.pause :
+                            Icons.play_arrow, color: base, size: 30),
+                          onPressed: () {
+                            _stopWatchTimer.onExecute
+                              .add(StopWatchExecute.stop);
+                            controller.stop();
+                            setState(() {
+                              isAnimating = false;
+                            });
                           },
                         ),
-                      ),
-                      Align(
-                        alignment: FractionalOffset.bottomCenter,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: < Widget > [
-                            SizedBox(
-                              height: 0.22 * MediaQuery.of(context).size.height,
-                            ),
-                            AnimatedBuilder(
-                              animation: controller,
-                              builder: (BuildContext context, Widget child) {
-                                return Text(
-                                  displayTime,
-                                  style: TextStyle(
-                                    fontSize: 35,
-                                    color: kindaGray
-                                  ),
-                                );
-                              }),
-                          ],
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
+                SizedBox(
+                  width: 0.2 * MediaQuery.of(context).size.width,
+                ),
+                Card(
+                  elevation: 6,
+                  shape: CircleBorder(),
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                          icon: Icon(Icons.stop, color: base, size: 30),
+                          onPressed: () {
+                            _stopWatchTimer.onExecute
+                              .add(StopWatchExecute.reset);
+                            controller.reset();
+                            setState(() {
+                              isAnimating = false;
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ) :
+            Card(
+              elevation: 6,
+              shape: CircleBorder(),
+              child: AnimatedBuilder(
+                animation: controller,
+                builder: (BuildContext context, Widget child) {
+                  return CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child: IconButton(
+                      icon:
+                      Icon(Icons.play_arrow, color: base, size: 30),
+                      onPressed: () {
+                        _stopWatchTimer.onExecute
+                          .add(StopWatchExecute.start);
+                        _startAnimation();
+                        setState(() {
+                          isAnimating = true;
+                        });
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(
-                top: 0.1 * MediaQuery.of(context).size.height,
-                bottom: 0.2 * MediaQuery.of(context).size.height),
-              child: isAnimating ?
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Card(
-                    elevation: 6,
-                    shape: CircleBorder(),
-                    child: AnimatedBuilder(
-                      animation: controller,
-                      builder: (BuildContext context, Widget child) {
-                        return CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                            icon: Icon(isAnimating ?
-                              Icons.pause :
-                              Icons.play_arrow, color: base, size: 30),
-                            onPressed: () {
-                              _stopWatchTimer.onExecute
-                                .add(StopWatchExecute.stop);
-                              controller.stop();
-                              setState(() {
-                                isAnimating = false;
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 0.2 * MediaQuery.of(context).size.width,
-                  ),
-                  Card(
-                    elevation: 6,
-                    shape: CircleBorder(),
-                    child: AnimatedBuilder(
-                      animation: controller,
-                      builder: (BuildContext context, Widget child) {
-                        return CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.white,
-                          child: IconButton(
-                            icon: Icon(Icons.stop, color: base, size: 30),
-                            onPressed: () {
-                              _stopWatchTimer.onExecute
-                                .add(StopWatchExecute.reset);
-                              controller.reset();
-                              setState(() {
-                                isAnimating = false;
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ) :
-              Card(
-                elevation: 6,
-                shape: CircleBorder(),
-                child: AnimatedBuilder(
-                  animation: controller,
-                  builder: (BuildContext context, Widget child) {
-                    return CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon:
-                        Icon(Icons.play_arrow, color: base, size: 30),
-                        onPressed: () {
-                          _stopWatchTimer.onExecute
-                            .add(StopWatchExecute.start);
-                          _startAnimation();
-                          setState(() {
-                            isAnimating = true;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
 }
 
 class SpritePainter extends CustomPainter {
-  final Animation<double> _animation;
-  SpritePainter(this._animation) : super(repaint: _animation);
+  final Animation < double > _animation;
+  SpritePainter(this._animation): super(repaint: _animation);
   void circle(Canvas canvas, Rect rect, double value) {
     double opacity = (1.0 - (value / 4.0)).clamp(0.0, 0.4);
     Color color = new Color.fromRGBO(38, 128, 235, opacity);
