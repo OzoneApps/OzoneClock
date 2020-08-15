@@ -116,7 +116,7 @@ class _TimerState extends State < Timer > {
                 child: IconButton(
                   icon: Icon(Icons.play_arrow, color: base, size: 30),
                   onPressed: () => {
-                    print("pressed"),
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TimerRun(duration: hh*3600+mm*60+ss)))
                   },
                 ),
               )
