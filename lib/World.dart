@@ -41,9 +41,12 @@ class _WorldState extends State<World> {
     }
   }
 
-  update(Timer timer) async{
-    // update is only called on live clocks. So, it's safe to update datetime.
-    curr = await DateTime.now();
+  update(Timer timer) {
+    if (mounted) {
+      // update is only called on live clocks. So, it's safe to update datetime.
+      curr = DateTime.now();
+      setState(() {});
+    }
   }
 
   @override
