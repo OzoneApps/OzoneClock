@@ -3,7 +3,7 @@
 [![Made with Flutter](https://img.shields.io/badge/Made_with-Flutter-blue.svg)](https://flutter.dev/)
 
 # Ozone Clock
-<p align="center"> <img width="250" height="250" src="https://github.com/devabhixda/OzoneClock/blob/master/icon.png">  </p>
+<p align="center"> <img width="250" height="250" src="https://github.com/OzoneApps/OzoneClock/blob/master/icon.png">  </p>
 
 A clock app written with flutter framework, developed as a part of OzoneApps ecosystem.
 
